@@ -55,5 +55,5 @@ bool ascon128::decrypt(std::vector<uint8_t>& plaintext, const std::vector<uint8_
 {
   // \todo perform decryption with Ascon with given data. If decryption is
   // successful return true, otherwise return false.
-  return false.
+  return false;
 }
