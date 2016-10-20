@@ -34,6 +34,8 @@
 #include <array>
 #include <vector>
 
+#include <check.h>
+
 namespace
 {
   template <class T>
@@ -91,6 +93,20 @@ namespace
   void read(std::istream& is, std::vector<T>& array)
   {
     is.read(reinterpret_cast<char*>(array.data()), array.size());
+  }
+
+  inline
+  void ck_assert_str_split_eq(const std::string& lhs, const std::string& rhs)
+  {
+    ck_assert_uint_eq(lhs.size(), rhs.size());
+    std::string::size_type idx = 0, c = 16;
+    for (; idx < lhs.size(); idx += c)
+    {
+      const std::string temp_lhs = lhs.substr(idx, c);
+      const std::string temp_rhs = rhs.substr(idx, c);
+
+      ck_assert_str_eq(temp_lhs.c_str(), temp_rhs.c_str());
+    }
   }
 }
 

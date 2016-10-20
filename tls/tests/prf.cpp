@@ -72,7 +72,7 @@ START_TEST(simple)
   prf.get_output(output.data(), output.size());
 
   const auto outputs = digest_to_string(output);
-  ck_assert_str_eq(outputs.c_str(), expected.c_str());
+  ck_assert_str_split_eq(outputs, expected);
 }
 END_TEST
 
@@ -85,7 +85,7 @@ START_TEST(loop)
     prf.get_output(&output[s], 1);
 
   const auto outputs = digest_to_string(output);
-  ck_assert_str_eq(outputs.c_str(), expected.c_str());
+  ck_assert_str_split_eq(outputs, expected);
 }
 END_TEST
 
