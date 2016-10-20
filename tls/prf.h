@@ -5,7 +5,7 @@
 ** Contact: itsec-team@iaik.tugraz.at
 **
 ** IT-SECURITY LICENSE
-** Version 1.1, 12th of March 2016
+** Version 1.2, 1st of October 2016
 **
 ** This framework may only be used within the IT-Security exercises 2016. Only
 ** students that are formally registered within TUGRAZ-online may use it until
