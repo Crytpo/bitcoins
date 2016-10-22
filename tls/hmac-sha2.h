@@ -69,6 +69,12 @@ public:
   void update(const uint8_t* bytes, std::size_t size);
   /// Compute the digest.
   digest_storage digest();
+
+private:
+  std::array<uint8_t, block_size> inner_padding_;
+  std::array<uint8_t, block_size> outer_padding_;
+  sha2 inner_hash_;
+
 };
 
 #endif
