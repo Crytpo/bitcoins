@@ -6,7 +6,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # general setup
 set(NUMBER_OF_GROUPS 66)
-set(GROUP_NUMBER "00")
+set(GROUP_NUMBER "41")
 
 
 project(its2016 C CXX)
