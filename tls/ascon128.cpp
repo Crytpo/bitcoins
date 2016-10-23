@@ -26,34 +26,57 @@
 
 #include "ascon128.h"
 #include "ascon/crypto_aead.h"
+#include "random.h"
 
 ascon128::ascon128()
 {
-  // \todo initialize
+  // no key specified -> use random key
+  get_random_data(key_.data(), key_.size());
 }
 
 ascon128::ascon128(const key_storage& key)
 {
-  // \todo initialize with given key
+  key_ = key;
 }
 
 void ascon128::set_key(const key_storage& key)
 {
-  // \todo store key
+  key_ = key;
 }
 
 void ascon128::encrypt(std::vector<uint8_t>& ciphertext, const std::vector<uint8_t>& plaintext,
                        const nonce_storage& nonce,
                        const std::vector<uint8_t>& additional_data) const
 {
-  // \todo perform encryption with Ascon with given data
+  // simply encrypt using the provided function
+  unsigned long long clen;
+  ciphertext.resize(ciphertext_size(plaintext.size()));
+
+  crypto_aead_encrypt(ciphertext.data(), &clen,       // c, clen
+      plaintext.data(), plaintext.size(),             // m, mlen
+      additional_data.data(), additional_data.size(), // ad, adlen
+      NULL,                                           // nsec (not used)
+      nonce.data(),                                   // npub
+      key_.data());                                   // k
 }
 
 bool ascon128::decrypt(std::vector<uint8_t>& plaintext, const std::vector<uint8_t>& ciphertext,
                        const nonce_storage& nonce,
                        const std::vector<uint8_t>& additional_data) const
 {
-  // \todo perform decryption with Ascon with given data. If decryption is
-  // successful return true, otherwise return false.
-  return false;
+  // simply decrypt using the provided function
+  unsigned long long mlen;
+  plaintext.resize(plaintext_size(ciphertext.size()));
+
+  int fail = crypto_aead_decrypt(plaintext.data(), &mlen,   // m, mlen
+      NULL,                                                 // nsec (not used)
+      ciphertext.data(), ciphertext.size(),                 // c, clen
+      additional_data.data(), additional_data.size(),       // ad, adlen
+      nonce.data(),                                         // npub
+      key_.data());                                         // k
+
+  if (fail != 0)
+    return false;
+
+  return true;
 }
