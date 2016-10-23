@@ -23,6 +23,8 @@ public:
 private:
   static_assert(nonce_size == 16, "nonce needs to consist of 16 bytes");
 
+  std::array<uint8_t, nonce_size> current_nonce_;
+
 public:
   /// Initialize with given fixed common and fixed distinc part.
   incrementing_nonce(const uint8_t* fixed_common, const uint8_t* fixed_distinct = nullptr);
