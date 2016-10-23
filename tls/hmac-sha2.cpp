@@ -25,7 +25,6 @@
 ******************************************************************************/
 
 #include "hmac-sha2.h"
-#include "sha2.h"
 
 // H(K, m) = sha2( (K' XOR O) || sha2((K' XOR I) || m ) )
 // H(K, m) = sha2( outer_padding || sha2(inner_padding || m) )

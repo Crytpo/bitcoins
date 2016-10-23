@@ -29,6 +29,7 @@
 
 #include "hmac-sha2.h"
 #include <string>
+#include <vector>
 
 /// TLS PRF using HMAC-SHA256 according to RFC 5246 §5
 class hmac_prf
@@ -40,6 +41,13 @@ public:
 
   /// Copy given number of bytes from the PRFs output to the destination buffer.
   void get_output(uint8_t* dst, size_t len);
+
+private:
+  std::vector<uint8_t> secret_;
+  std::vector<uint8_t> D_;
+  std::array<uint8_t, hmac_sha2::digest_size> A_;
+  std::vector<uint8_t> P_;
+  size_t current_position_;
 };
 
 #endif
