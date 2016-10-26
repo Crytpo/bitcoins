@@ -49,22 +49,94 @@ bool tls12_ascon::record::operator!=(const record& other) const
 }
 
 tls12_ascon::tls12_ascon(const key_storage& key, const incrementing_nonce& nonce)
-{
-  // \todo initialize with given key
-}
+    : nonce_(nonce), ascon_(key) { }
 
 tls12_ascon::record tls12_ascon::encrypt(uint64_t sequence_number,
                                          const std::vector<uint8_t>& plaintext)
 {
-  /// \todo Implement ciphertext record generation for given plaintext.
-  /// The nonce has to be incremented after an successful encryption.
-  return record();
+  // header data
+  content_type type = TLS_APPLICATION_DATA;
+  protocol_version version = { .major = TLSv1_2_MAJOR, .minor = TLSv1_2_MINOR };
+  uint16_t plaintext_length = plaintext.size();
+  uint16_t header_length = incrementing_nonce::explicit_size
+      + ascon128::ciphertext_size(plaintext.size());
+
+  // flip everything due to order of bytes (network order = big endian)
+  // easier with std::reverse_copy, but not sure if allowed
+  uint64_t be_seq = htob(sequence_number);
+  uint8_t be_type = htob((uint8_t) type);
+  uint16_t be_version = htob(*(uint16_t*) &version); // fancy
+  uint16_t be_plen = htob(plaintext_length);
+  uint16_t be_length = htob(header_length);
+
+  // create additional data which is needed for the encryption
+  size_t ad_len = sizeof(be_seq) + sizeof(be_type) + sizeof(be_version)
+      + sizeof(be_plen);
+  std::vector<uint8_t> associated_data(ad_len, 0);
+
+  std::copy((uint8_t*) &be_seq, (uint8_t*) &be_seq + sizeof(be_seq),
+      associated_data.data());
+  std::copy((uint8_t*) &be_type, (uint8_t*) &be_type + sizeof(be_type),
+      associated_data.data() + sizeof(be_seq));
+  std::copy((uint8_t*) &be_version, (uint8_t*) &be_version + sizeof(be_version),
+      associated_data.data() + sizeof(be_seq) + sizeof(be_type));
+  std::copy((uint8_t*) &be_plen, (uint8_t*) &be_plen + sizeof(be_plen),
+      associated_data.data() + (ad_len - sizeof(be_plen)));
+
+  // encrypt plaintext with ascon128, nonce and additional data
+  std::vector<uint8_t> ciphertext;
+  ascon_.encrypt(ciphertext, plaintext, nonce_.nonce(), associated_data);
+
+  // create the record with the header data, encrypted fragment and the nonce
+  // important: everything in network byte order (= big endian)
+  record encrypted_record = {
+    .header = {
+          .type = be_type,
+          .version = *(protocol_version*)&be_version, // big endian, but object?
+          .length = be_length
+        },
+    .explicit_nonce = nonce_.explicit_nonce(),
+    .ciphertext = ciphertext
+  };
+
+  // increment counter in nonce for next encryption
+  ++nonce_;
+
+  return encrypted_record;
 }
 
 bool tls12_ascon::decrypt(uint64_t sequence_number, const record& record,
                           std::vector<uint8_t>& plaintext)
 {
-  /// \todo Implement decryption for the given record.
-  /// If decryption was successful return true, otherwise return false.
-  return false;
+  // create additional data (flip stuff that is not read from the record)
+  uint64_t be_seq = htob(sequence_number);
+  uint16_t be_plen = ascon128::plaintext_size(record.ciphertext.size());
+  be_plen = htob(be_plen);
+
+  size_t ad_len = sizeof(be_seq) + sizeof(record.header.type)
+      + sizeof(record.header.version) + sizeof(be_plen);
+  std::vector<uint8_t> associated_data(ad_len, 0);
+
+  std::copy((uint8_t*) &be_seq, (uint8_t*) &be_seq + sizeof(be_seq),
+      associated_data.data());
+  std::copy((uint8_t*) &record.header,
+      (uint8_t*) &record.header + sizeof(record.header.type) + sizeof(record.header.version),
+      associated_data.data() + sizeof(be_seq));
+  std::copy((uint8_t*) &be_plen, (uint8_t*) &be_plen + sizeof(be_plen),
+        associated_data.data() + (ad_len - sizeof(be_plen)));
+
+  // build used nonce (implicit from saved nonce and explicit from record)
+  std::array<uint8_t, incrementing_nonce::nonce_size> nonce;
+  std::array<uint8_t, incrementing_nonce::implicit_size> implicit_nonce =
+      nonce_.implicit_nonce();
+
+  std::copy(implicit_nonce.begin(), implicit_nonce.end(), nonce.begin());
+  std::copy(record.explicit_nonce.begin(), record.explicit_nonce.end(),
+      nonce.begin() + incrementing_nonce::implicit_size);
+
+  // decrypt the ciphertext
+  bool ret_val = ascon_.decrypt(plaintext, record.ciphertext, nonce,
+      associated_data);
+
+  return ret_val;
 }

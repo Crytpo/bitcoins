@@ -66,6 +66,9 @@ public:
   /// can be decrypted and verified.
   bool decrypt(uint64_t sequence_number, const record& record,
                        std::vector<uint8_t>& plaintext);
+private:
+  incrementing_nonce nonce_;
+  ascon128 ascon_;
 };
 
 #endif

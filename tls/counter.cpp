@@ -6,10 +6,18 @@ incrementing_nonce::incrementing_nonce(const uint8_t* fixed_common,
 {
   // create new nonce with fixed data and counter starting at 0
   current_nonce_.fill(0); // set everything to 0 (including counter)
-  std::copy(&fixed_common[0], &fixed_common[0] + fixed_common_size,
-      current_nonce_.data());
-  std::copy(&fixed_distinct[0], &fixed_distinct[0] + fixed_distinct_size,
-      current_nonce_.data() + fixed_common_size);
+
+  if (fixed_common != NULL)
+  {
+    std::copy(&fixed_common[0], &fixed_common[0] + fixed_common_size,
+        current_nonce_.data());
+  }
+
+  if (fixed_distinct != NULL)
+  {
+    std::copy(&fixed_distinct[0], &fixed_distinct[0] + fixed_distinct_size,
+        current_nonce_.data() + fixed_common_size);
+  }
 }
 
 incrementing_nonce& incrementing_nonce::operator++()
