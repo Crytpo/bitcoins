@@ -59,15 +59,15 @@ endforeach(challenge)
 
 foreach(challenge IN LISTS remote_challenges)
   get_filename_component(basename "${challenge}" NAME_WE)
-  add_custom_target("tls_${basename}_remote_tsc"
+  add_custom_target("tls_${basename}_remote"
     $<TARGET_FILE:mqlucky13>
     ${challenge}
     ${challenge}.sol
     DEPENDS mqlucky13)
-  add_dependencies(tls_remote_tsc "tls_${basename}_remote_tsc")
+  add_dependencies(tls_remote "tls_${basename}_remote")
 endforeach(challenge)
 
-add_custom_target(tls DEPENDS tls_remote_tsc tls_local_tsc)
+add_custom_target(tls DEPENDS tls_remote tls_local_tsc)
 
 set(mqoracle_target "mqoracle.x86_64")
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/${mqoracle_target}
