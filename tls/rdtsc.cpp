@@ -24,11 +24,16 @@
 **
 ******************************************************************************/
 
+#include <iostream>
 #include "clocks.h"
+
+using namespace std;
 
 uint64_t rdtsc_clock::begin()
 {
   /// \todo Implement start of RDTSC based measurement here.
+  
+    
   return 0;
 }
 

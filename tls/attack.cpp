@@ -26,6 +26,11 @@
 
 #include "attack.h"
 
+std::vector<uint8_t> lucky13_pe(const oracle::record& original_record, local_oracle& oracle)
+{
+    return std::vector<uint8_t>();
+}
+
 std::vector<uint8_t> lucky13_tsc(const oracle::record& original_record, local_oracle& oracle)
 {
   /// \todo Implement your attack using the local oracle and the RTDSC clock.
