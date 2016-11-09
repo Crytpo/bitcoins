@@ -31,7 +31,6 @@ oracle::~oracle()
 }
 
 // local oracle
-
 local_oracle::local_oracle(const ciphersuite::block_cipher_key& key,
                            const ciphersuite::hmac_key& hmac_key, clock_type ct)
   : ciphersuite_(key, hmac_key), ct_(ct)
