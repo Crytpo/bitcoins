@@ -87,13 +87,7 @@ int main(int argc, char** argv)
 
   local_oracle oracle(bc_key, hmac_key, clock_type);
 
-  // Encrypt the original plain text.
-  std::vector<uint8_t> recovered_plaintext;
-
-  if (clock_type == local_oracle::RDTSC)
-    recovered_plaintext = lucky13_tsc(original_record, oracle);
-  else
-    recovered_plaintext = lucky13_pe(original_record, oracle);
+  std::vector<uint8_t> recovered_plaintext = lucky13_tsc(original_record, oracle);
 
   std::ofstream ofs(output_file.c_str());
   if (!ofs)

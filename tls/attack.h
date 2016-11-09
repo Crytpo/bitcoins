@@ -32,13 +32,6 @@
 
 #include "oracle.h"
 
-/// Lucky13 attack using the perf event clock.
-///
-/// \param original_record ciphertext record
-/// \param oracle decryption oracle
-/// \return recovered plaintext
-std::vector<uint8_t> lucky13_pe(const oracle::record& original_record, local_oracle& oracle);
-
 /// Lucky13 attack using the RDTSC clock.
 ///
 /// \param original_record ciphertext record
