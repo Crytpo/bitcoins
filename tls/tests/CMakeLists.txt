@@ -2,31 +2,31 @@ add_definitions(${CHECK_DEFINITIONS})
 include_directories(${CHECK_INCLUDE_DIRS})
 link_directories(${CHECK_LIBRARY_DIRS})
 
-#add_executable(test_nonce nonce.cpp)
-#target_link_libraries(test_nonce primitives ${CHECK_LIBRARIES})
+add_executable(test_nonce nonce.cpp)
+target_link_libraries(test_nonce primitives ${CHECK_LIBRARIES})
 
-#add_executable(test_prf prf.cpp)
-#target_link_libraries(test_prf primitives ${CHECK_LIBRARIES})
-#
-#add_executable(test_hmac_sha1 hmac_sha1.cpp)
-#target_link_libraries(test_hmac_sha1
-#                      primitives ${CHECK_LIBRARIES})
-#
-#add_executable(test_hmac_sha2 hmac_sha2.cpp)
-#target_link_libraries(test_hmac_sha2
-#                      primitives ${CHECK_LIBRARIES})
-#
-#add_executable(test_ascon ascon.cpp)
-#target_link_libraries(test_ascon primitives ${CHECK_LIBRARIES})
-#
-#add_executable(test_tls_ascon tls_ascon.cpp)
-#target_link_libraries(test_tls_ascon primitives ${CHECK_LIBRARIES})
-#
-#add_executable(test_random random.cpp)
-#target_link_libraries(test_random primitives ${CHECK_LIBRARIES})
-#
-#add_executable(test_cbc cbc)
-#target_link_libraries(test_cbc primitives ${CHECK_LIBRARIES})
+add_executable(test_prf prf.cpp)
+target_link_libraries(test_prf primitives ${CHECK_LIBRARIES})
+
+add_executable(test_hmac_sha1 hmac_sha1.cpp)
+target_link_libraries(test_hmac_sha1
+                      primitives ${CHECK_LIBRARIES})
+
+add_executable(test_hmac_sha2 hmac_sha2.cpp)
+target_link_libraries(test_hmac_sha2
+                      primitives ${CHECK_LIBRARIES})
+
+add_executable(test_ascon ascon.cpp)
+target_link_libraries(test_ascon primitives ${CHECK_LIBRARIES})
+
+add_executable(test_tls_ascon tls_ascon.cpp)
+target_link_libraries(test_tls_ascon primitives ${CHECK_LIBRARIES})
+
+add_executable(test_random random.cpp)
+target_link_libraries(test_random primitives ${CHECK_LIBRARIES})
+
+add_executable(test_cbc cbc)
+target_link_libraries(test_cbc primitives ${CHECK_LIBRARIES})
 
 add_test(NAME prf COMMAND test_prf)
 add_test(NAME nonce COMMAND test_nonce)
