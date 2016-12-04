@@ -218,3 +218,9 @@ blockchain/build/
 
 slides/
 nbproject/
+
+CTestTestfile.cmake
+its2016.doxygen
+tls/CTestTestfile.cmake
+tls/tests/CTestTestfile.cmake
+doc/template.doxy.in

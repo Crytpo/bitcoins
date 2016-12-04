@@ -267,6 +267,7 @@ std::vector<uint8_t> lucky13_tsc(const oracle::record& original_record, remote_o
   std::deque<uint8_t> plaintext;
 
   // No guarantee that TimeStampCounter synchronized between cores -> force everything to one core
+  // NOTE: not really needed here, but whatever
   cpu_set_t cpuset;
   CPU_ZERO(&cpuset);
   CPU_SET(0, &cpuset);
