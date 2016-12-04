@@ -32,11 +32,15 @@ uint64_t rdtsc_clock::begin()
   uint32_t cycles_high = 0;
   uint32_t cycles_low = 0;
 
-  // most modern CPUs should support RDTSCP, therefore that should be enough
-  // no need to use CPUID for synchronization + RDTSC
+  // NOTE: many registers in clobbered ops, because otherwise segmentation fault for some reason
   __asm__ __volatile__(
-        "rdtscp"
-          : "=d"(cycles_high), "=a"(cycles_low)
+        "cpuid\n\t"               // force previous instructions to be completed
+        "rdtsc\n\t"               // read TimeStampCounter (tsc)
+        "movl %%edx, %1\n\t"
+        "movl %%eax, %0\n\t"
+            : "=r" (cycles_low), "=r" (cycles_high)     // output ops
+            :                                           // input ops
+            : "%rax", "%rbx", "%rcx", "%rdx"            // clobbered ops
   );
 
   return ( (static_cast<uint64_t>(cycles_high) << 32) | static_cast<uint64_t>(cycles_low));
@@ -48,8 +52,13 @@ uint64_t rdtsc_clock::end()
   uint32_t cycles_low = 0;
   
   __asm__ __volatile__(
-        "rdtscp"
-          : "=d"(cycles_high), "=a"(cycles_low)
+        "rdtscp\n\t"              // read tsc + wait for previous commands
+        "movl %%edx, %1\n\t"
+        "movl %%eax, %0\n\t"
+        "cpuid\n\t"               // force previous instructions to be completed
+            : "=r" (cycles_low), "=r" (cycles_high)     // output ops
+            :                                           // input ops
+            : "%rax", "%rbx", "%rcx", "%rdx"            // clobbered ops
   );
   
   return ( (static_cast<uint64_t>(cycles_high) << 32) | static_cast<uint64_t>(cycles_low));
