@@ -10,6 +10,8 @@ Task 2 - Lucky13
 -----------------------------------------------------------------------
 The attack has a few problems on my laptop (timings flunctuate), but on
 my PC everything works perfectly.
+NOTE: tls/challenges/its2016g41-018.rchal.sol has been recovered from heap
+and is missing some characters in the beginning
 
 
 #######################################################################
