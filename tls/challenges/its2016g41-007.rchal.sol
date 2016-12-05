@@ -1,0 +1,1 @@
+ that he had recently cut out of an illustrated magazine and 

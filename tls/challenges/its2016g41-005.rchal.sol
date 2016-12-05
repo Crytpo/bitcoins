@@ -1,0 +1,1 @@
+to stiff sections. The bedding was hard
