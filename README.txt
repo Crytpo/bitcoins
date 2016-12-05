@@ -6,6 +6,11 @@ without any errors.
 
 
 
+Task 2 - Lucky13
+-----------------------------------------------------------------------
+The attack has a few problems on my laptop (timings flunctuate), but on
+my PC everything works perfectly.
+
 
 #######################################################################
 For every assignment:
