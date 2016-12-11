@@ -16,6 +16,9 @@ if(NOT CMAKE_BUILD_TYPE)
       "Choose the type of build." FORCE)
 endif()
 
+# options
+option(VALGRIND_ARGS "additional arguments to valgrind" "")
+
 # doygen setup
 SET(DOXYGEN_CONFIG_IN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/doc/template.doxy.in")
 set(DEFAULT_DOXYGEN_OUTPUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/doc")
@@ -59,6 +62,8 @@ find_package(Check REQUIRED)
 
 # add aubdirectories
 add_subdirectory(tls)
+add_subdirectory(ecclib)
+add_subdirectory(blockchain)
 
 message(STATUS "---------------------------------------------------------------------")
 message(STATUS "Configuration for ${CMAKE_PROJECT_NAME} done.")
@@ -76,4 +81,5 @@ message(STATUS "  suite.............Builds the test program.")
 message(STATUS "  check.............Runs the test program.")
 message(STATUS "  doxygen...........Build doxygen documentation.")
 message(STATUS "  tls...............Run TLS attack programs.")
+message(STATUS "  blockchain_attack.Run blockchain attack programs.")
 message(STATUS "---------------------------------------------------------------------")
