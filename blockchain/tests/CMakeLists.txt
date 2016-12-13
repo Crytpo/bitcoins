@@ -10,13 +10,14 @@ if(CMAKE_USE_PTHREADS_INIT)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 endif()
 
-add_executable(test_merkletree merkletree.cpp)
-target_link_libraries(test_merkletree bc_primitives ${CHECK_LIBRARIES}
-  ${CMAKE_THREAD_LIBS_INIT})
+foreach(target IN ITEMS merkletree blockchain)
+  add_executable("test_${target}" "${target}.cpp")
+  target_link_libraries("test_${target}" bc_primitives ${CHECK_LIBRARIES})
 
-add_test(NAME merkletree COMMAND test_merkletree)
+  add_test(NAME ${target} COMMAND "test_${target}")
 
-add_custom_target("valgrind_test_merkletree"
-  env CK_FORK=no valgrind ${VALGRIND_ARGUMENTS}
-  $<TARGET_FILE:test_merkletree>
-  DEPENDS test_merkletree)
+  add_custom_target("valgrind_test_${target}"
+    env CK_FORK=no valgrind ${VALGRIND_ARGUMENTS}
+    $<TARGET_FILE:test_${target}>
+    DEPENDS test_${target})
+endforeach(target)

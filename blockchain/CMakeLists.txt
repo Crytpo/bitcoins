@@ -1,11 +1,11 @@
 set(BC_PRIMITIVES_SOURCES
+    blockchain.cpp
     ecclib-glue.cpp
     ecdsa.cpp
     merkletree.cpp
     io.cpp)
 
 set(BC_SOURCES
-    blockchain.cpp
     attack.cpp
     main.cpp)
 
