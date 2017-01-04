@@ -82,6 +82,9 @@ public:
   ///
   /// @return root hash
   sha2::digest_storage root_hash() const;
+
+private:
+  std::vector<proof_node> tree_;
 };
 
 #endif
