@@ -37,6 +37,9 @@
 ///
 /// It references a previous transaction via its hash and the output index. The
 /// signature must be a valid signature for the redeemed transaction output.
+///
+/// When hashing transaction inputs, hash transaction_hash || output_index ||
+/// signature.
 struct transaction_input
 {
   sha2::digest_storage transaction_hash;
@@ -48,6 +51,8 @@ struct transaction_input
 ///
 /// The ECDSA public key specifies the user that is able to redeem the
 /// transaction. The amount specifies the number of redemable coins.
+///
+/// When hashing transaction outputs, hash target || amount.
 struct transaction_output
 {
   ecc_public_key_t target;
@@ -60,6 +65,8 @@ struct transaction_output
 /// * the redeemed amount exactly matches the spent amount
 /// * all signatures of the inputs are valid
 /// * inputs do not refer to already redeemed transactions
+///
+/// When hashing transactions, hash outputs || inputs || timestamp.
 struct transaction
 {
   std::vector<transaction_input> inputs;
@@ -74,6 +81,8 @@ struct transaction
 /// transactions.
 ///
 /// In case the block is the first block, previous must be all zeroes.
+///
+/// When hashing blocks, hash previous || seed || root_hash twice.
 struct block
 {
   sha2::digest_storage previous;
