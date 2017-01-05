@@ -73,7 +73,8 @@ public:
   /// - the output of reward transactions may not exeed 100
   /// - all other transactions need to be valid
   /// - unless the block is the first one, the block must consist of at least
-  ///   one transaction.
+  ///   one transaction
+  /// - the block hash needs to solve the hash puzzle
   ///
   /// Valid transactions are:
   /// - The hash in transaction input must refer to valid transactions recorded

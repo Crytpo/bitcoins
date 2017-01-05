@@ -99,8 +99,8 @@ struct block
 /// * If it is the first block, it may not contain any transactions.
 /// * If is is not the first block, it must contain transactions.
 /// * The root hash stored in the header must equal the the root hash of the
-///   Merkle tree consisting of hash(reward) || hash(transaction_1) ||
-///   ... hash(transaction_n)
+///   Merkle tree consisting of hash(reward), hash(transaction_1),
+///   ..., hash(transaction_n)
 struct full_block
 {
   ::block block;
