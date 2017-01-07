@@ -32,10 +32,26 @@
 
 #include <cmath>
 
+#include <unordered_map>
+#include <string>
+
 /// Blockchain for KUcoin.
 class block_chain
 {
+private:
+  std::unordered_map<std::string, full_block> blockchain_;
+  sha2::digest_storage hash_previous_;
+
+  // mapping from transaction_hash to (blockchain_hash, transaction_output_index)
+  // with -1 = reward transaction
+  std::unordered_map<std::string, std::pair<std::string, int64_t> > transactions_;
+
+  sha2::digest_storage calculate_hash_transaction(const transaction& t);
+  bool checkTransactions(const std::vector<transaction>& transactions);
+
 public:
+  block_chain();
+
   /// Compute the difficulty based on the number of blocks.
   ///
   /// @param number_of_blocks current number of blocks in the chain
