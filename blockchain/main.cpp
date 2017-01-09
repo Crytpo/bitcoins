@@ -160,6 +160,18 @@ int main(int argc, char** argv)
       return 1;
     }
 
+    std::ofstream pub_os(target_pub_filename.c_str());
+    write(pub_os, target_public_key);
+
+    std::ofstream priv_os(target_priv_filename.c_str());
+    write(priv_os, target_private_key);
+
+    if (!pub_os || !priv_os)
+    {
+      std::cout << "Failed to write keys to disk!" << std::endl;
+      return 1;
+    }
+
     std::cout << "Attack was successful! Do not forget to commit the following files:" << std::endl;
     std::cout << "\t" << attacker_priv_filename << std::endl;
     std::cout << "\t" << attacker_pub_filename << std::endl;
