@@ -14,6 +14,15 @@ NOTE: tls/challenges/its2016g41-018.rchal.sol has been recovered from heap
 and is missing some characters in the beginning
 
 
+
+Task 3 - Blockchain
+-----------------------------------------------------------------------
+Due to exams and other exercises we did not have time to implement the
+attack itself. We only implemented the Merkle Tree and the Blockchain.
+
+
+
+
 #######################################################################
 For every assignment:
 * If everything is working, you are done within one sentence saying so.
