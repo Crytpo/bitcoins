@@ -117,10 +117,13 @@ std::vector<merkle_tree::proof_node> merkle_tree::proof(const sha2::digest_stora
 
   // find index of the value
   size_t index_of_value = 0;
-  for (index_of_value = 0; index_of_value < tree_.size(); ++index_of_value)
+  for (size_t index = 0; index < tree_.size(); ++index)
   {
-    if (tree_[index_of_value].digest == value)
+    if (tree_[index].digest == value)
+    {
+      index_of_value = index;
       break;
+    }
   }
 
   // build proof tree (sibling nodes along the path to the value)
